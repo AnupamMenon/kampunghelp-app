@@ -21,6 +21,8 @@
   details { margin-bottom: 1em; }
 </style>
 <script>
+let kampungPoints = 45;
+
 function showPage(pageId) {
   document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
   document.getElementById(pageId).style.display = 'block';
@@ -50,11 +52,26 @@ function postRequest() {
 function acceptRequest(btn) {
   alert("You have accepted this request. The requester will be notified.");
   btn.parentElement.parentElement.style.borderLeft = "6px solid #2e7d32";
+  addPoints(5);
 }
 
 function rejectRequest(btn) {
   alert("You have rejected this request.");
   btn.parentElement.parentElement.style.opacity = 0.5;
+}
+
+function addPoints(points) {
+  kampungPoints += points;
+  document.getElementById('kampungPointsDisplay').textContent = `Kampung Points: ${kampungPoints}`;
+  const redemptionList = document.getElementById('redemptionList');
+  redemptionList.innerHTML = `
+    <p>You have ${kampungPoints} points. Redeem your rewards below:</p>
+    <ul>
+      <li>50 points: $5 McDonald's Voucher</li>
+      <li>100 points: NTUC FairPrice Voucher</li>
+      <li>150 points: Coffee Bean Gift Card</li>
+    </ul>
+  `;
 }
 
 window.onload = () => { showPage('home'); };
@@ -84,6 +101,7 @@ window.onload = () => { showPage('home'); };
   <button class="nav-button" onclick="showPage('profile')">View Profile</button>
   <button class="nav-button" onclick="showPage('notifications')">Notifications</button>
   <button class="nav-button" onclick="showPage('challenges')">Community Challenges</button>
+  <button class="nav-button" onclick="showPage('rewards')">Redeem Rewards</button>
   <button class="nav-button" onclick="showPage('common')">Virtual Common Area</button>
 </div>
 
@@ -97,7 +115,7 @@ window.onload = () => { showPage('home'); };
 
 <div id="profile" class="container page" style="display:none;">
   <h2>Your Profile</h2>
-  <p>Kampung Points: 45</p>
+  <p id="kampungPointsDisplay">Kampung Points: 45</p>
   <p>Past Requests: 3 | Offers Given: 5</p>
   <button class="nav-button">Edit Profile</button>
   <button class="nav-button" onclick="showPage('home')">Back to Home</button>
@@ -135,6 +153,19 @@ window.onload = () => { showPage('home'); };
   <button class="nav-button" onclick="showPage('home')">Back to Home</button>
 </div>
 
+<div id="rewards" class="container page" style="display:none;">
+  <h2>Redeem Rewards</h2>
+  <div class="card" id="redemptionList">
+    <p>You have 45 points. Redeem your rewards below:</p>
+    <ul>
+      <li>50 points: $5 McDonald's Voucher</li>
+      <li>100 points: NTUC FairPrice Voucher</li>
+      <li>150 points: Coffee Bean Gift Card</li>
+    </ul>
+  </div>
+  <button class="nav-button" onclick="showPage('home')">Back to Home</button>
+</div>
+
 <div id="common" class="container page" style="display:none;">
   <h2>Virtual Common Area</h2>
   <p>This is a social space to chat, bond, and share interests with your neighbours.</p>
@@ -145,5 +176,6 @@ window.onload = () => { showPage('home'); };
 
 </body>
 </html>
+
 
 
