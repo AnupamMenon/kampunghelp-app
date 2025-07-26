@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>KampungHelp App</title>
+<style>
+  body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; background: #f5f5f5; }
+  header { background: #2e7d32; color: white; padding: 1em; text-align: center; font-size: 1.5em; }
+  .container { padding: 1.5em; }
+  button { margin: 0.5em 0.5em 0.5em 0; padding: 0.75em 1.2em; font-size: 1em; border: none; border-radius: 8px; cursor: pointer; transition: background 0.3s; display: inline-block; }
+  .accept-btn { background: #4CAF50; color: white; }
+  .accept-btn:hover { background: #388e3c; }
+  .reject-btn { background: #f44336; color: white; }
+  .reject-btn:hover { background: #d32f2f; }
+  .nav-button { display: block; width: 100%; max-width: 300px; margin: 0.5em auto; padding: 0.75em; font-size: 1em; background: #2e7d32; color: white; border: none; border-radius: 8px; cursor: pointer; transition: background 0.3s; text-align: center; }
+  .nav-button:hover { background: #1b5e20; }
+  .card { background: white; padding: 1em; margin: 1em 0; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+  input[type=text] { width: 100%; padding: 1em; margin: 0.5em 0; border: 1px solid #ccc; border-radius: 6px; }
+  summary { font-weight: bold; cursor: pointer; }
+  details { margin-bottom: 1em; }
+</style>
+<script>
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
+  document.getElementById(pageId).style.display = 'block';
+}
+
+function postRequest() {
+  const content = document.getElementById('requestInput').value.trim();
+  if (content === '') return alert("Please enter a request or offer.");
+  const unit = document.getElementById('unitInput').value.trim();
+  const list = document.getElementById('requestList');
+
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `
+    ${content} ${unit ? '- ' + unit : ''}
+    <div style="margin-top: 0.5em; display: flex; gap: 0.5em;">
+      <button class="accept-btn" onclick="acceptRequest(this)">Accept</button>
+      <button class="reject-btn" onclick="rejectRequest(this)">Reject</button>
+    </div>
+  `;
+  list.prepend(card);
+  document.getElementById('requestInput').value = '';
+  document.getElementById('unitInput').value = '';
+  showPage('home');
+}
+
+function acceptRequest(btn) {
+  alert("You have accepted this request. The requester will be notified.");
+  btn.parentElement.parentElement.style.borderLeft = "6px solid #2e7d32";
+}
+
+function rejectRequest(btn) {
+  alert("You have rejected this request.");
+  btn.parentElement.parentElement.style.opacity = 0.5;
+}
+
+window.onload = () => { showPage('home'); };
+</script>
+</head>
+<body>
+
+<header>KampungHelp</header>
+
+<div id="home" class="container page">
+  <h2>Nearby Requests</h2>
+  <div id="requestList">
+    <div class="card">Need to borrow a ladder this weekend - #05-113
+      <div style="margin-top: 0.5em; display: flex; gap: 0.5em;">
+        <button class="accept-btn" onclick="acceptRequest(this)">Accept</button>
+        <button class="reject-btn" onclick="rejectRequest(this)">Reject</button>
+      </div>
+    </div>
+    <div class="card">Can water plants for 1 week - #04-221
+      <div style="margin-top: 0.5em; display: flex; gap: 0.5em;">
+        <button class="accept-btn" onclick="acceptRequest(this)">Accept</button>
+        <button class="reject-btn" onclick="rejectRequest(this)">Reject</button>
+      </div>
+    </div>
+  </div>
+  <button class="nav-button" onclick="showPage('add')">Add New Request/Offer</button>
+  <button class="nav-button" onclick="showPage('profile')">View Profile</button>
+  <button class="nav-button" onclick="showPage('notifications')">Notifications</button>
+  <button class="nav-button" onclick="showPage('challenges')">Community Challenges</button>
+  <button class="nav-button" onclick="showPage('common')">Virtual Common Area</button>
+</div>
+
+<div id="add" class="container page" style="display:none;">
+  <h2>Add Request/Offer</h2>
+  <input id="requestInput" type="text" placeholder="What do you need or offer?">
+  <input id="unitInput" type="text" placeholder="Unit # (optional)">
+  <button class="nav-button" onclick="postRequest()">Post</button>
+  <button class="nav-button" onclick="showPage('home')">Back to Home</button>
+</div>
+
+<div id="profile" class="container page" style="display:none;">
+  <h2>Your Profile</h2>
+  <p>Kampung Points: 45</p>
+  <p>Past Requests: 3 | Offers Given: 5</p>
+  <button class="nav-button">Edit Profile</button>
+  <button class="nav-button" onclick="showPage('home')">Back to Home</button>
+</div>
+
+<div id="notifications" class="container page" style="display:none;">
+  <h2>Notifications</h2>
+  <div class="card">John from #04-221 can lend you a ladder.</div>
+  <div class="card">You have earned 5 Kampung Points for helping Sarah.</div>
+  <button class="nav-button" onclick="showPage('home')">Back to Home</button>
+</div>
+
+<div id="challenges" class="container page" style="display:none;">
+  <h2>Community Challenges</h2>
+  <details class="card">
+    <summary>Welcome Week</summary>
+    <p>Introduce yourself to 2 new neighbours. Get to know your kampung community!</p>
+  </details>
+  <details class="card">
+    <summary>Helping Hand Week</summary>
+    <p>Offer help to someone on the app. Earn bonus Kampung Points for each accepted offer.</p>
+  </details>
+  <details class="card">
+    <summary>Game Week</summary>
+    <p>Join a neighbourhood virtual or physical game night to build bonds and fun memories.</p>
+  </details>
+  <details class="card">
+    <summary>Kindness Week</summary>
+    <p>Do something kind anonymously for a neighbour—like leaving a note or helping silently.</p>
+  </details>
+  <details class="card">
+    <summary>Green Initiative Week</summary>
+    <p>Organise or participate in a local cleanup, recycling drive or eco-education event.</p>
+  </details>
+  <button class="nav-button" onclick="showPage('home')">Back to Home</button>
+</div>
+
+<div id="common" class="container page" style="display:none;">
+  <h2>Virtual Common Area</h2>
+  <p>This is a social space to chat, bond, and share interests with your neighbours.</p>
+  <div class="card">Group: Green Thumb Gardeners 🌱</div>
+  <div class="card">Chat with fellow neighbours (Coming Soon)</div>
+  <button class="nav-button" onclick="showPage('home')">Back to Home</button>
+</div>
+
+</body>
+</html>
+
+
