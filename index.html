@@ -54,25 +54,28 @@
 
 <div id="home" class="container page">
   <div class="card">
-    <h2>🎯 Points System Overview</h2>
+    <h2>Points System Overview</h2>
     <p><strong>Total Kampung Points:</strong> <span id="kampungPointsDisplay">Kampung Points: 45</span></p>
     <div class="progress-container">
       <div id="progressBar" class="progress-bar"></div>
     </div>
-    <p style="margin-top: 0.5em;"><strong>Next Reward:</strong> <span id="nextRewardText">5 points away from $5 McDonald's Voucher!</span></p>
+    <p style="margin-top: 0.5em;"><strong>Next Reward:</strong> <span id="nextRewardText">55 points away from $10 Grab Voucher</span></p>
 
-    <h3>🏆 How You Earn Points:</h3>
+    <h3>How You Earn Points:</h3>
     <ul>
       <li><span class="badge">+5</span> Accept and help with a request</li>
-      <li><span class="badge">+10</span> Complete 5 helps in a week</li>
-      <li><span class="badge">+15</span> Join a Community Challenge</li>
+      <li><span class="badge">+20</span> Complete 5 accepted helps</li>
+      <li><span class="badge">+50</span> Organize a block event</li>
+      <li><span class="badge">+150</span> Complete a large volunteer project</li>
+      <li><span class="badge">+300</span> Lead a long-term community campaign</li>
     </ul>
 
-    <h3>🎁 Reward Tiers:</h3>
+    <h3>Reward Tiers:</h3>
     <ul>
-      <li>50 points: $5 McDonald's Voucher</li>
-      <li>100 points: NTUC FairPrice Voucher</li>
-      <li>150 points: Coffee Bean Gift Card</li>
+      <li>100 points: $10 Grab Voucher</li>
+      <li>300 points: $30 Supermarket Voucher</li>
+      <li>500 points: Exclusive KampungHelp Hoodie</li>
+      <li>1000 points: Community Recognition + Dinner Invite</li>
     </ul>
   </div>
 
@@ -127,9 +130,9 @@
   <h2>Community Challenges</h2>
   <details class="card"><summary>Welcome Week</summary><p>Introduce yourself to 2 new neighbours.</p></details>
   <details class="card"><summary>Helping Hand Week</summary><p>Offer help to someone on the app.</p></details>
-  <details class="card"><summary>Game Week</summary><p>Join a neighbourhood game night.</p></details>
+  <details class="card"><summary>Event Host Week</summary><p>Host a game night or community event.</p></details>
   <details class="card"><summary>Kindness Week</summary><p>Do something kind anonymously.</p></details>
-  <details class="card"><summary>Green Initiative Week</summary><p>Join a recycling or eco-event.</p></details>
+  <details class="card"><summary>Green Initiative Week</summary><p>Join a cleanup or recycling drive.</p></details>
   <button class="nav-button" onclick="showPage('home')">Back to Home</button>
 </div>
 
@@ -138,9 +141,10 @@
   <div class="card" id="redemptionList">
     <p>You have 45 points. Redeem your rewards below:</p>
     <ul>
-      <li>50 points: $5 McDonald's Voucher</li>
-      <li>100 points: NTUC FairPrice Voucher</li>
-      <li>150 points: Coffee Bean Gift Card</li>
+      <li>100 points: $10 Grab Voucher</li>
+      <li>300 points: $30 Supermarket Voucher</li>
+      <li>500 points: Exclusive KampungHelp Hoodie</li>
+      <li>1000 points: Community Recognition & Dinner Invite</li>
     </ul>
   </div>
   <button class="nav-button" onclick="showPage('home')">Back to Home</button>
@@ -149,7 +153,7 @@
 <div id="common" class="container page" style="display:none;">
   <h2>Virtual Common Area</h2>
   <p>This is a social space to chat and bond with neighbours.</p>
-  <div class="card">Group: Green Thumb Gardeners 🌱</div>
+  <div class="card">Group: Green Thumb Gardeners</div>
   <div class="card">Chat with fellow neighbours (Coming Soon)</div>
   <button class="nav-button" onclick="showPage('home')">Back to Home</button>
 </div>
@@ -200,13 +204,13 @@
     document.getElementById('kampungPointsProfile').textContent = `Kampung Points: ${kampungPoints}`;
     updateProgress();
 
-    const redemptionList = document.getElementById('redemptionList');
-    redemptionList.innerHTML = `
+    document.getElementById('redemptionList').innerHTML = `
       <p>You have ${kampungPoints} points. Redeem your rewards below:</p>
       <ul>
-        <li>50 points: $5 McDonald's Voucher</li>
-        <li>100 points: NTUC FairPrice Voucher</li>
-        <li>150 points: Coffee Bean Gift Card</li>
+        <li>100 points: $10 Grab Voucher</li>
+        <li>300 points: $30 Supermarket Voucher</li>
+        <li>500 points: Exclusive KampungHelp Hoodie</li>
+        <li>1000 points: Community Recognition & Dinner Invite</li>
       </ul>
     `;
   }
@@ -214,21 +218,31 @@
   function updateProgress() {
     const progressBar = document.getElementById('progressBar');
     const nextRewardText = document.getElementById('nextRewardText');
-    let percentage = Math.min((kampungPoints % 50) / 50 * 100, 100);
-    progressBar.style.width = `${percentage}%`;
 
     let nextReward = '';
-    if (kampungPoints < 50) {
-      nextReward = `${50 - kampungPoints} points away from $5 McDonald's Voucher!`;
-    } else if (kampungPoints < 100) {
-      nextReward = `${100 - kampungPoints} points away from NTUC FairPrice Voucher!`;
-    } else if (kampungPoints < 150) {
-      nextReward = `${150 - kampungPoints} points away from Coffee Bean Gift Card!`;
+    let goal = 0;
+
+    if (kampungPoints < 100) {
+      goal = 100;
+      nextReward = "$10 Grab Voucher";
+    } else if (kampungPoints < 300) {
+      goal = 300;
+      nextReward = "$30 Supermarket Voucher";
+    } else if (kampungPoints < 500) {
+      goal = 500;
+      nextReward = "Exclusive KampungHelp Hoodie";
+    } else if (kampungPoints < 1000) {
+      goal = 1000;
+      nextReward = "Community Recognition & Dinner Invite";
     } else {
-      nextReward = `You’ve unlocked all rewards! 🎉`;
+      progressBar.style.width = "100%";
+      nextRewardText.textContent = "You’ve unlocked all rewards!";
+      return;
     }
 
-    nextRewardText.textContent = nextReward;
+    const percentage = Math.min((kampungPoints / goal) * 100, 100);
+    progressBar.style.width = `${percentage}%`;
+    nextRewardText.textContent = `${goal - kampungPoints} points away from ${nextReward}`;
   }
 
   window.onload = () => {
@@ -239,6 +253,7 @@
 
 </body>
 </html>
+
 
 
 
